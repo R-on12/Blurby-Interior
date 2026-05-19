@@ -1,0 +1,6 @@
+{
+  "name": "Blurby Interior",
+  "description": "A modern luxury interior décor brand featuring elegant, premium, and minimal design solutions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
