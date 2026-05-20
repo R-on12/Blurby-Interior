@@ -1,0 +1,255 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 1. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- reusable common helpers --- //
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerifiedUser() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isAdmin() {
+      return isVerifiedUser() && (
+        request.auth.token.email == "coopedill@gmail.com" ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // --- Entity Specific Validation Blueprints --- //
+
+    function isValidProject(data) {
+      return data.id is string && data.id.size() >= 1 && data.id.size() <= 128 &&
+             data.title is string && data.title.size() >= 1 && data.title.size() <= 200 &&
+             data.category is string && (data.category == "Modern" || data.category == "Minimalist" || data.category == "Scandinavian" || data.category == "Luxury" || data.category == "Contemporary") &&
+             data.img is string && data.img.size() >= 1 && data.img.size() <= 1000 &&
+             data.createdAt is timestamp;
+    }
+
+    function isValidGalleryImage(data) {
+      return data.id is string && data.id.size() >= 1 && data.id.size() <= 128 &&
+             data.title is string && data.title.size() >= 1 && data.title.size() <= 200 &&
+             data.category is string && (data.category == "Modern" || data.category == "Minimalist" || data.category == "Scandinavian" || data.category == "Luxury" || data.category == "Contemporary") &&
+             data.img is string && data.img.size() >= 1 && data.img.size() <= 1000 &&
+             data.createdAt is timestamp;
+    }
+
+    function isValidBooking(data) {
+      return data.id is string && data.id.size() >= 1 && data.id.size() <= 128 &&
+             data.clientName is string && data.clientName.size() >= 1 && data.clientName.size() <= 200 &&
+             data.clientEmail is string && data.clientEmail.size() >= 3 && data.clientEmail.size() <= 200 &&
+             data.space is string && data.space.size() >= 1 && data.space.size() <= 200 &&
+             data.date is string && data.date.size() >= 1 && data.date.size() <= 100 &&
+             data.status is string && (data.status == "Confirmed" || data.status == "Pending" || data.status == "Consultation") &&
+             data.createdAt is timestamp;
+    }
+
+    function isValidInquiry(data) {
+      return data.id is string && data.id.size() >= 1 && data.id.size() <= 128 &&
+             data.clientName is string && data.clientName.size() >= 1 && data.clientName.size() <= 200 &&
+             data.clientEmail is string && data.clientEmail.size() >= 3 && data.clientEmail.size() <= 200 &&
+             data.subject is string && data.subject.size() >= 1 && data.subject.size() <= 200 &&
+             data.messageText is string && data.messageText.size() >= 1 && data.messageText.size() <= 5000 &&
+             data.status is string && (data.status == "active" || data.status == "replied" || data.status == "archived") &&
+             data.createdAt is timestamp;
+    }
+
+    function isValidBlogPost(data) {
+      return data.id is string && data.id.size() >= 1 && data.id.size() <= 128 &&
+             data.title is string && data.title.size() >= 1 && data.title.size() <= 200 &&
+             data.category is string && data.category.size() >= 1 && data.category.size() <= 100 &&
+             data.desc is string && data.desc.size() >= 1 && data.desc.size() <= 500 &&
+             data.content is string && data.content.size() >= 1 && data.content.size() <= 50000 &&
+             data.img is string && data.img.size() >= 1 && data.img.size() <= 1000 &&
+             data.status is string && (data.status == "draft" || data.status == "published") &&
+             data.createdAt is timestamp;
+    }
+
+    function isValidDesigner(data) {
+      return data.id is string && data.id.size() >= 1 && data.id.size() <= 128 &&
+             data.name is string && data.name.size() >= 1 && data.name.size() <= 200 &&
+             data.role is string && data.role.size() >= 1 && data.role.size() <= 200 &&
+             data.location is string && (data.location == "Milan" || data.location == "Paris" || data.location == "New York") &&
+             data.createdAt is timestamp;
+    }
+
+
+    // --- Firestore Collection Match Pathways --- //
+
+    // PROJECTS collection
+    match /projects/{projectId} {
+      allow read: if true; // Publicly viewable Project list/docs
+
+      allow create: if isAdmin() &&
+                       isValidId(projectId) &&
+                       projectId == incoming().id &&
+                       isValidProject(incoming()) &&
+                       incoming().createdAt == request.time &&
+                       incoming().keys().hasAll(['id', 'title', 'category', 'img', 'createdAt']) &&
+                       incoming().keys().size() == 5;
+
+      allow update: if isAdmin() &&
+                       isValidId(projectId) &&
+                       projectId == incoming().id &&
+                       isValidProject(incoming()) &&
+                       incoming().createdAt == existing().createdAt &&
+                       (
+                         // Action: Edit details
+                         incoming().diff(existing()).affectedKeys().hasOnly(['title', 'category', 'img'])
+                       );
+
+      allow delete: if isAdmin() && isValidId(projectId);
+    }
+
+    // GALLERY collection
+    match /gallery/{imageId} {
+      allow read: if true; // Publicly viewable image gallery
+
+      allow create: if isAdmin() &&
+                       isValidId(imageId) &&
+                       imageId == incoming().id &&
+                       isValidGalleryImage(incoming()) &&
+                       incoming().createdAt == request.time &&
+                       incoming().keys().hasAll(['id', 'title', 'category', 'img', 'createdAt']) &&
+                       incoming().keys().size() == 5;
+
+      allow update: if isAdmin() &&
+                       isValidId(imageId) &&
+                       imageId == incoming().id &&
+                       isValidGalleryImage(incoming()) &&
+                       incoming().createdAt == existing().createdAt &&
+                       (
+                         incoming().diff(existing()).affectedKeys().hasOnly(['title', 'category', 'img'])
+                       );
+
+      allow delete: if isAdmin() && isValidId(imageId);
+    }
+
+    // BOOKINGS collection
+    match /bookings/{bookingId} {
+      // In order to perform secure reads, admins can view everything.
+      // Verified users can query or view their own bookings via filtered sub-selection.
+      allow read: if isAdmin() || (isVerifiedUser() && resource.data.clientEmail == request.auth.token.email);
+
+      // Clients can schedule consultation bookings (create records) if they are verified users
+      allow create: if isVerifiedUser() &&
+                       isValidId(bookingId) &&
+                       bookingId == incoming().id &&
+                       isValidBooking(incoming()) &&
+                       incoming().createdAt == request.time &&
+                       incoming().clientEmail == request.auth.token.email &&
+                       incoming().status == "Pending" && // New bookings MUST start as Pending
+                       incoming().keys().hasAll(['id', 'clientName', 'clientEmail', 'space', 'date', 'status', 'createdAt']) &&
+                       incoming().keys().size() == 7;
+
+      // Admins can update booking statuses (Pending -> Confirmed / Consultation). Clients can update spaces/dates.
+      allow update: if isValidId(bookingId) &&
+                       incoming().id == existing().id &&
+                       incoming().createdAt == existing().createdAt &&
+                       incoming().clientEmail == existing().clientEmail &&
+                       isValidBooking(incoming()) &&
+                       (
+                         // Action 1: Admin updating status
+                         (isAdmin() && incoming().diff(existing()).affectedKeys().hasOnly(['status'])) ||
+                         // Action 2: Client rescheduling or changing room requirements (only if current booking isn't confirmed terminal state)
+                         (isVerifiedUser() &&
+                          existing().status == "Pending" &&
+                          existing().clientEmail == request.auth.token.email &&
+                          incoming().diff(existing()).affectedKeys().hasOnly(['space', 'date', 'clientName']))
+                       );
+
+      allow delete: if isAdmin() && isValidId(bookingId);
+    }
+
+    // INQUIRIES collection
+    match /inquiries/{inquiryId} {
+      // Direct access security checks
+      allow read: if isAdmin(); // Only admins can read inquiries
+
+      // Creators (public, verified users) can send inquiries.
+      allow create: if isVerifiedUser() &&
+                       isValidId(inquiryId) &&
+                       inquiryId == incoming().id &&
+                       isValidInquiry(incoming()) &&
+                       incoming().createdAt == request.time &&
+                       incoming().clientEmail == request.auth.token.email &&
+                       incoming().status == "active" &&
+                       incoming().keys().hasAll(['id', 'clientName', 'clientEmail', 'subject', 'messageText', 'status', 'createdAt']) &&
+                       incoming().keys().size() == 7;
+
+      // Only admins can reply or archive inquiries, or change status.
+      allow update: if isAdmin() &&
+                       isValidId(inquiryId) &&
+                       incoming().id == existing().id &&
+                       incoming().createdAt == existing().createdAt &&
+                       isValidInquiry(incoming()) &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['status']);
+
+      allow delete: if isAdmin() && isValidId(inquiryId);
+    }
+
+    // JOURNAL/BLOG collection
+    match /blog/{postId} {
+      allow read: if true; // Publicly viewable blog posts (if draft or published, handled in client-side but simple read is allowed here)
+
+      allow create: if isAdmin() &&
+                       isValidId(postId) &&
+                       postId == incoming().id &&
+                       isValidBlogPost(incoming()) &&
+                       incoming().createdAt == request.time &&
+                       incoming().keys().hasAll(['id', 'title', 'category', 'desc', 'content', 'img', 'status', 'createdAt']) &&
+                       incoming().keys().size() == 8;
+
+      allow update: if isAdmin() &&
+                       isValidId(postId) &&
+                       incoming().id == existing().id &&
+                       incoming().createdAt == existing().createdAt &&
+                       isValidBlogPost(incoming()) &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['title', 'category', 'desc', 'content', 'img', 'status']);
+
+      allow delete: if isAdmin() && isValidId(postId);
+    }
+
+    // DESIGNERS collection
+    match /designers/{designerId} {
+      allow read: if true; // Publicly readable designer profiles
+
+      allow create: if isAdmin() &&
+                       isValidId(designerId) &&
+                       designerId == incoming().id &&
+                       isValidDesigner(incoming()) &&
+                       incoming().createdAt == request.time &&
+                       incoming().keys().hasAll(['id', 'name', 'role', 'location', 'createdAt']) &&
+                       incoming().keys().size() == 5;
+
+      allow update: if isAdmin() &&
+                       isValidId(designerId) &&
+                       incoming().id == existing().id &&
+                       incoming().createdAt == existing().createdAt &&
+                       isValidDesigner(incoming()) &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['name', 'role', 'location']);
+
+      allow delete: if isAdmin() && isValidId(designerId);
+    }
+  }
+}

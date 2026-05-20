@@ -1,0 +1,117 @@
+{
+  "entities": {
+    "Project": {
+      "title": "Project",
+      "description": "An interior design project with category and showcase image.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the project." },
+        "title": { "type": "string", "description": "Name of the project." },
+        "category": { "type": "string", "description": "Design style category.", "enum": ["Modern", "Minimalist", "Scandinavian", "Luxury", "Contemporary"] },
+        "img": { "type": "string", "description": "Reference URL or asset path for the project visualization." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp when the project was created." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Timestamp when the project was last updated." }
+      },
+      "required": ["id", "title", "category", "img", "createdAt"]
+    },
+    "GalleryImage": {
+      "title": "Gallery Image",
+      "description": "A standalone inspiration/visual showcase image for the design gallery.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the gallery image." },
+        "title": { "type": "string", "description": "Description of the image subject." },
+        "category": { "type": "string", "description": "Design style category.", "enum": ["Modern", "Minimalist", "Scandinavian", "Luxury", "Contemporary"] },
+        "img": { "type": "string", "description": "Reference URL or asset path." },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "img", "createdAt"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "A consultation reservation scheduled by a prospective client.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the booking." },
+        "clientName": { "type": "string", "description": "Full name of the client." },
+        "clientEmail": { "type": "string", "description": "Contact email of the client." },
+        "space": { "type": "string", "description": "Type of space requested for consultation." },
+        "date": { "type": "string", "description": "Date of the scheduled consultation." },
+        "status": { "type": "string", "enum": ["Confirmed", "Pending", "Consultation"], "description": "Current state of the booking." },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "clientName", "clientEmail", "space", "date", "status", "createdAt"]
+    },
+    "Inquiry": {
+      "title": "Inquiry",
+      "description": "A general message or inquiry sent from the contact interface.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier." },
+        "clientName": { "type": "string", "description": "Name of inquirer." },
+        "clientEmail": { "type": "string", "description": "Contact email." },
+        "subject": { "type": "string", "description": "Inquiry topic or seasonal context." },
+        "messageText": { "type": "string", "description": "Detailed contents of the query." },
+        "status": { "type": "string", "enum": ["active", "replied", "archived"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "clientName", "clientEmail", "subject", "messageText", "status", "createdAt"]
+    },
+    "BlogPost": {
+      "title": "Blog Post",
+      "description": "A published narrative or design journal insight.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the journal entry." },
+        "title": { "type": "string", "description": "Headline of the post." },
+        "category": { "type": "string", "description": "Topics like Sustainability, Lighting, Materials." },
+        "desc": { "type": "string", "description": "Short metadata intro summary." },
+        "content": { "type": "string", "description": "Full text of the post body." },
+        "img": { "type": "string", "description": "Hero visual header imagery." },
+        "status": { "type": "string", "enum": ["draft", "published"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "category", "desc", "content", "img", "status", "createdAt"]
+    },
+    "Designer": {
+      "title": "Designer",
+      "description": "A featured interior designer profile on the site.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique designer identifier." },
+        "name": { "type": "string", "description": "Designer's name." },
+        "role": { "type": "string", "description": "Their title or space focus." },
+        "location": { "type": "string", "description": "Their home city (Milan, Paris, New York)." },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "role", "location", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/projects/{projectId}": {
+      "schema": "Project",
+      "description": "Portfolios of completed design projects."
+    },
+    "/gallery/{imageId}": {
+      "schema": "GalleryImage",
+      "description": "Standalone gallery design inspiration items."
+    },
+    "/bookings/{bookingId}": {
+      "schema": "Booking",
+      "description": "Initial design consultations and bookings."
+    },
+    "/inquiries/{inquiryId}": {
+      "schema": "Inquiry",
+      "description": "Contact inquiries from customers."
+    },
+    "/blog/{postId}": {
+      "schema": "BlogPost",
+      "description": "Narratives and insights inside the journal."
+    },
+    "/designers/{designerId}": {
+      "schema": "Designer",
+      "description": "Managing featured studio designers."
+    }
+  }
+}
