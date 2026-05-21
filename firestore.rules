@@ -90,7 +90,7 @@ service cloud.firestore {
       return data.id is string && data.id.size() >= 1 && data.id.size() <= 128 &&
              data.name is string && data.name.size() >= 1 && data.name.size() <= 200 &&
              data.role is string && data.role.size() >= 1 && data.role.size() <= 200 &&
-             data.location is string && (data.location == "Milan" || data.location == "Paris" || data.location == "New York") &&
+             data.location is string && (data.location == "Accra" || data.location == "Takoradi" || data.location == "New York") &&
              data.createdAt is timestamp;
     }
 

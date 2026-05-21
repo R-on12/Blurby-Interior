@@ -82,7 +82,7 @@
         "id": { "type": "string", "description": "Unique designer identifier." },
         "name": { "type": "string", "description": "Designer's name." },
         "role": { "type": "string", "description": "Their title or space focus." },
-        "location": { "type": "string", "description": "Their home city (Milan, Paris, New York)." },
+        "location": { "type": "string", "description": "Their home city (Accra, Takoradi, New York)." },
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["id", "name", "role", "location", "createdAt"]

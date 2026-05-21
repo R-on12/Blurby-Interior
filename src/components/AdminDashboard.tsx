@@ -917,7 +917,7 @@ function DesignersManager({ designers, onAdd, onDelete }: any) {
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
-  const [location, setLocation] = useState("Milan");
+  const [location, setLocation] = useState("Accra");
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -1001,7 +1001,7 @@ function DesignersManager({ designers, onAdd, onDelete }: any) {
                   onChange={(e) => setLocation(e.target.value)}
                   className="w-full bg-white border border-black/10 p-3 text-xs uppercase tracking-wider outline-none focus:border-[#D4AF37] font-sans"
                 >
-                  {["Milan", "Paris", "New York"].map((loc) => (
+                  {["Accra", "Takoradi", "New York"].map((loc) => (
                     <option key={loc} value={loc}>{loc}</option>
                   ))}
                 </select>

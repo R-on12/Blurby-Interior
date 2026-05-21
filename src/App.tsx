@@ -59,6 +59,12 @@ const IMAGES = {
   walnutDining: "/src/assets/images/walnut_dining_set_1779357535849.png",
   alabasterPendants: "/src/assets/images/alabaster_pendants_1779357555646.png",
   steelShelving: "/src/assets/images/steel_shelving_ceramics_1779357575783.png",
+  africanModernLiving: "/src/assets/images/african_modern_living_1779358230675.png",
+  africanModernBedroom: "/src/assets/images/african_modern_bedroom_1779358248098.png",
+  africanModernDining: "/src/assets/images/african_modern_dining_1779358266261.png",
+  westernModernLiving: "/src/assets/images/western_modern_living_1779358290743.png",
+  westernModernBath: "/src/assets/images/western_modern_bath_1779358307727.png",
+  westernModernOffice: "/src/assets/images/western_modern_office_1779358327752.png",
 };
 
 const SERVICES = [
@@ -148,6 +154,12 @@ const SERVICES = [
 
 const PORTFOLIO = [
   { id: "p1", title: "The Onyx Suite", category: "Modern", img: IMAGES.modern },
+  { id: "p1-af1", title: "Ocher & Clay Oasis (African Modern)", category: "Modern", img: IMAGES.africanModernLiving },
+  { id: "p1-af2", title: "Sleek Terracotta Sanctuary (African Modern)", category: "Modern", img: IMAGES.africanModernBedroom },
+  { id: "p1-af3", title: "Monolithic Mudcloth Atrium (African Modern)", category: "Modern", img: IMAGES.africanModernDining },
+  { id: "p1-we1", title: "Twilight Alpine Lounge (Western Modern)", category: "Modern", img: IMAGES.westernModernLiving },
+  { id: "p1-we2", title: "Calm Limestone Bathing (Western Modern)", category: "Modern", img: IMAGES.westernModernBath },
+  { id: "p1-we3", title: "Walnut & Marble Atelier (Western Modern)", category: "Modern", img: IMAGES.westernModernOffice },
   { id: "p2", title: "Silent Corridors", category: "Minimalist", img: IMAGES.minimalist },
   { id: "p3", title: "Oslo Morning", category: "Scandinavian", img: IMAGES.scandinavian },
   { id: "p4", title: "Grand Atrium", category: "Luxury", img: IMAGES.luxury },
@@ -366,8 +378,8 @@ export default function App() {
       }
       // Staging Team Designers
       const startupDesigners = [
-        { id: "des-1", name: "Adrian Blurby", role: "Principal Architect", location: "Milan" },
-        { id: "des-2", name: "Elena Solst", role: "Senior Stylist", location: "Paris" },
+        { id: "des-1", name: "Adrian Blurby", role: "Principal Architect", location: "Accra" },
+        { id: "des-2", name: "Elena Solst", role: "Senior Stylist", location: "Takoradi" },
         { id: "des-3", name: "Thomas Cael", role: "Material Specialist", location: "New York" },
       ];
       for (const d of startupDesigners) {
@@ -623,8 +635,8 @@ export default function App() {
         inquiries={inquiriesList}
         blog={blogList}
         designers={designersList.length > 0 ? designersList : [
-          { id: "des-1", name: "Adrian Blurby", role: "Principal Architect", location: "Milan" },
-          { id: "des-2", name: "Elena Solst", role: "Senior Stylist", location: "Paris" },
+          { id: "des-1", name: "Adrian Blurby", role: "Principal Architect", location: "Accra" },
+          { id: "des-2", name: "Elena Solst", role: "Senior Stylist", location: "Takoradi" },
           { id: "des-3", name: "Thomas Cael", role: "Material Specialist", location: "New York" },
         ]}
         currentUser={currentUser}
@@ -1446,7 +1458,7 @@ export default function App() {
             <div className="col-span-1 md:col-span-2">
               <div className="text-3xl font-serif mb-8 italic text-black font-semibold">Blurby Interior</div>
               <p className="font-sans text-sm text-black/65 max-w-sm leading-relaxed mb-10">
-                Milan &bull; Paris &bull; New York <br />
+                Accra &bull; Takoradi &bull; New York <br />
                 Exceptional interior spaces designed with a legacy of craftsmanship and a vision for contemporary silence.
               </p>
               <div className="flex gap-8">
