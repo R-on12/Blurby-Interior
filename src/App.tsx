@@ -69,6 +69,14 @@ const IMAGES = {
   planWireframe: "/src/assets/images/plan_wireframe_lux_1779358675384.png",
   planSectional: "/src/assets/images/plan_sectional_axono_1779358695752.png",
   planElevation: "/src/assets/images/plan_elevation_study_1779358717270.png",
+  officeAfricanIroko: "/src/assets/images/office_african_iroko_1779359188688.png",
+  artStudioLoft: "/src/assets/images/art_studio_loft_1779359211651.png",
+  officeWesternExec: "/src/assets/images/office_western_exec_1779359231478.png",
+  boutiqueDesignStudio: "/src/assets/images/boutique_design_studio_1779359251667.png",
+  officeAfricanExec: "/src/assets/images/office_african_exec_1779359273429.png",
+  artAtelierCeramic: "/src/assets/images/art_atelier_ceramic_1779359298945.png",
+  officeScandCoworking: "/src/assets/images/office_scand_coworking_1779359320008.png",
+  architectDraftStudio: "/src/assets/images/architect_draft_studio_1779359345251.png",
 };
 
 const SERVICES = [
@@ -88,6 +96,14 @@ const SERVICES = [
     description: "Productivity met with silence. We design workspaces that inspire focus and creative clarity.",
     icon: "02",
     images: [
+      { url: IMAGES.officeAfricanIroko, caption: "African Modern Workspace: Iroko Desks & Ocean-Facing Clay Terracotta Suite" },
+      { url: IMAGES.artStudioLoft, caption: "Bright Creative Art Studio Loft with Double-Height Glass Skylights" },
+      { url: IMAGES.officeWesternExec, caption: "Sleek Contemporary Western Office: Obsidian Glass Desk & Concealed Indirect Cove LEDs" },
+      { url: IMAGES.boutiqueDesignStudio, caption: "Boutique Architectural Design Desk with Stone Swatches & Brushed Brass Accents" },
+      { url: IMAGES.officeAfricanExec, caption: "African Modern Executive Office: Black Monolith Desk & Ochre Hand-Textured Wall" },
+      { url: IMAGES.artAtelierCeramic, caption: "Sculptural Wabi-Sabi Ceramic Atelier & Pine Craft Hand-Sculpting Workshop" },
+      { url: IMAGES.officeScandCoworking, caption: "Scandinavian Collaborative Hub: Pale Pine Shared Desks & Linen Acoustic Panels" },
+      { url: IMAGES.architectDraftStudio, caption: "Scale Study Drafting Studio with Professional Concrete Calipers & 3D Wood Layout Models" },
       { url: IMAGES.planning, caption: "3D Spatial Blueprinting" },
       { url: IMAGES.minimalist, caption: "Silent Office Corridors" },
       { url: IMAGES.texture, caption: "Sustainable Raw Material Grid" },
@@ -1034,8 +1050,17 @@ export default function App() {
                   setSelectedService(service);
                   setActiveServiceImageIdx(0);
                 }}
-                className="group p-8 border border-black/5 hover:border-[#D4AF37] transition-all duration-500 h-full flex flex-col items-start bg-[#F6F4F0]/30 rounded-sm cursor-pointer hover:shadow-md hover:bg-white"
+                className={`group p-8 border hover:border-[#D4AF37] transition-all duration-500 h-full flex flex-col items-start rounded-sm cursor-pointer hover:shadow-md hover:bg-white relative overflow-hidden ${
+                  i === 1
+                    ? "border-[#D4AF37] ring-1 ring-[#D4AF37]/30 bg-white shadow-sm before:absolute before:top-0 before:left-0 before:w-1.5 before:h-full before:bg-[#D4AF37]"
+                    : "border-black/5 bg-[#F6F4F0]/30"
+                }`}
               >
+                {i === 1 && (
+                  <span className="absolute top-4 right-4 bg-[#D4AF37]/10 text-[#D4AF37] text-[8px] uppercase tracking-widest px-2.5 py-1 font-bold rounded-full border border-[#D4AF37]/20 font-mono">
+                    Expanded • 12 Concepts
+                  </span>
+                )}
                 <span id={`service-icon-${i}`} className="text-[36px] font-serif italic text-[#D4AF37]/50 group-hover:text-[#D4AF37] transition-colors duration-500 leading-none mb-6">
                   {service.icon}
                 </span>
