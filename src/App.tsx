@@ -52,38 +52,97 @@ const IMAGES = {
   luxury: "/src/assets/images/luxury_foyer_project_1779114507957.png",
   contemporary: "/src/assets/images/contemporary_kitchen_project_1779114523300.png",
   planning: "/src/assets/images/space_planning_3d_1779114539721.png",
+  lightingSculptural: "/src/assets/images/light_fixture_sculptural_1779357011713.png",
+  sculpturalChair: "/src/assets/images/luxury_sculptural_chair_1779357030837.png",
+  ambientPendant: "/src/assets/images/ambient_pendant_selection_1779357048949.png",
+  designerLamp: "/src/assets/images/designer_floor_lamp_1779357512464.png",
+  walnutDining: "/src/assets/images/walnut_dining_set_1779357535849.png",
+  alabasterPendants: "/src/assets/images/alabaster_pendants_1779357555646.png",
+  steelShelving: "/src/assets/images/steel_shelving_ceramics_1779357575783.png",
 };
 
 const SERVICES = [
   {
     title: "Residential Interior Design",
     description: "Tailored living spaces that reflect your personal narrative through curated materials and architectural precision.",
-    icon: "01"
+    icon: "01",
+    images: [
+      { url: IMAGES.living, caption: "Oak & Linen Living Room Room" },
+      { url: IMAGES.modern, caption: "The Onyx Suite Lounge" },
+      { url: IMAGES.scandinavian, caption: "Oslo Morning Quiet Corner" },
+      { url: IMAGES.hero, caption: "Curated Atmosphere Study" }
+    ]
   },
   {
     title: "Office & Workspace Design",
     description: "Productivity met with silence. We design workspaces that inspire focus and creative clarity.",
-    icon: "02"
+    icon: "02",
+    images: [
+      { url: IMAGES.planning, caption: "3D Spatial Blueprinting" },
+      { url: IMAGES.minimalist, caption: "Silent Office Corridors" },
+      { url: IMAGES.texture, caption: "Sustainable Raw Material Grid" },
+      { url: IMAGES.contemporary, caption: "Modern Collaboration Hub" }
+    ]
   },
   {
     title: "Luxury Bedroom Styling",
     description: "Sanctuaries of rest. Focused on soft textures, atmospheric lighting, and high-end comfort.",
-    icon: "03"
+    icon: "03",
+    images: [
+      { url: IMAGES.bedroom, caption: "Ethereal Sleep Chambers" },
+      { url: IMAGES.texture, caption: "Linen Fibers & Bedding Textures" },
+      { url: IMAGES.scandinavian, caption: "Minimal Warm Bedroom Lounge" },
+      { url: IMAGES.hero, caption: "Integrated Study & Sleeping Zone" }
+    ]
   },
   {
     title: "Kitchen & Dining Concepts",
     description: "The heart of the home, reimagined as a sculptural center for gathering and culinary art.",
-    icon: "04"
+    icon: "04",
+    images: [
+      { url: IMAGES.dining, caption: "Grand Dining Atrium" },
+      { url: IMAGES.contemporary, caption: "The Chef's Canvas Kitchen" },
+      { url: IMAGES.living, caption: "Open-Concept Dining Flow" },
+      { url: IMAGES.modern, caption: "Onyx Culinary Bar" }
+    ]
   },
   {
     title: "Lighting & Furniture Selection",
     description: "Curated pieces and bespoke lighting plans that define the mood and volume of your space.",
-    icon: "05"
+    icon: "05",
+    images: [
+      { url: IMAGES.lightingSculptural, caption: "Hand-Blown Glass & Polished Brass Chandelier" },
+      { url: IMAGES.sculpturalChair, caption: "Sculptural Cream Bouclé & Espresso Oak Lounge Chair" },
+      { url: IMAGES.ambientPendant, caption: "Scenographic Ambient Mood Light & Modern Furniture Grid" },
+      { url: IMAGES.designerLamp, caption: "Thin Curved Brass Stem Floor Lamp alongside Matte Leather Chair" },
+      { url: IMAGES.walnutDining, caption: "Sculptural Walnut Dining Table & Minimal Sand Upholstery Set" },
+      { url: IMAGES.alabasterPendants, caption: "Raw Translucent Alabaster Block Pendants over Monolithic Island" },
+      { url: IMAGES.steelShelving, caption: "Structural Matte-Black Steel Modular Library Unit" },
+      { url: IMAGES.luxury, caption: "Echoes of Gold luxe foyer with sweeping ambient downlights" },
+      { url: IMAGES.dining, caption: "Bespoke linear art fixture over wide solid oak block table" },
+      { url: IMAGES.texture, caption: "Handmade ceramic ornaments standing against wabi-sabi concrete wall" },
+      { url: IMAGES.hero, caption: "Intimate studying cove illuminated by soft indirect LED backglass" },
+      { url: IMAGES.living, caption: "Curated minimal charcoal low sectional and dynamic side metal tables" },
+      { url: IMAGES.bedroom, caption: "Floating dark-stained oak sleep frame accompanied by linear sconces" },
+      { url: IMAGES.modern, caption: "Dramatically lit marble culinary bar highlighting structural pendants" },
+      { url: IMAGES.minimalist, caption: "Recessed minimalist track paths highlighting clean geometric hallway" },
+      { url: IMAGES.scandinavian, caption: "Oslo morning natural light highlighting low timber accent tables" },
+      { url: IMAGES.contemporary, caption: "Polished statement ventilation hood reflecting dynamic spotlights" },
+      { url: IMAGES.planning, caption: "Interactive render detailing photometric cast calculations" },
+      { url: IMAGES.sculpturalChair, caption: "Tactile close view: Luxurious bouclê weaving texture detail" },
+      { url: IMAGES.lightingSculptural, caption: "Polished custom-milled brass joint finish detailing close" }
+    ]
   },
   {
     title: "3D Visualization & Planning",
     description: "Bringing your vision to life through high-fidelity artistic renderings and precise spatial strategy.",
-    icon: "06"
+    icon: "06",
+    images: [
+      { url: IMAGES.planning, caption: "High-Fidelity Virtual Walkthrough" },
+      { url: IMAGES.contemporary, caption: "Virtual Kitchen Prototype" },
+      { url: IMAGES.modern, caption: "Virtual Living Space Render" },
+      { url: IMAGES.minimalist, caption: "Hallway Spatial Geometry Analysis" }
+    ]
   }
 ];
 
@@ -120,6 +179,8 @@ export default function App() {
   const [designersList, setDesignersList] = useState<any[]>([]);
 
   // Modals & form overlays states
+  const [selectedService, setSelectedService] = useState<any | null>(null);
+  const [activeServiceImageIdx, setActiveServiceImageIdx] = useState(0);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isInquiryOpen, setIsInquiryOpen] = useState(false);
 
@@ -948,15 +1009,23 @@ export default function App() {
             {SERVICES.map((service, i) => (
               <div
                 key={service.title}
-                className="group p-8 border border-black/5 hover:border-[#D4AF37] transition-all duration-500 h-full flex flex-col items-start bg-[#F6F4F0]/30 rounded-sm"
+                id={`service-card-${i}`}
+                onClick={() => {
+                  setSelectedService(service);
+                  setActiveServiceImageIdx(0);
+                }}
+                className="group p-8 border border-black/5 hover:border-[#D4AF37] transition-all duration-500 h-full flex flex-col items-start bg-[#F6F4F0]/30 rounded-sm cursor-pointer hover:shadow-md hover:bg-white"
               >
-                <span className="text-[36px] font-serif italic text-[#D4AF37]/50 group-hover:text-[#D4AF37] transition-colors duration-500 leading-none mb-6">
+                <span id={`service-icon-${i}`} className="text-[36px] font-serif italic text-[#D4AF37]/50 group-hover:text-[#D4AF37] transition-colors duration-500 leading-none mb-6">
                   {service.icon}
                 </span>
-                <h3 className="text-xl font-serif mb-4 text-black">{service.title}</h3>
-                <p className="font-sans text-xs text-black/60 leading-relaxed">
+                <h3 id={`service-title-${i}`} className="text-xl font-serif mb-4 text-black group-hover:text-[#D4AF37] transition-colors">{service.title}</h3>
+                <p id={`service-desc-${i}`} className="font-sans text-xs text-black/60 leading-relaxed mb-6">
                   {service.description}
                 </p>
+                <div id={`service-view-action-${i}`} className="mt-auto text-[9px] uppercase tracking-[0.2em] font-sans font-bold text-[#D4AF37] flex items-center gap-1.5 group-hover:translate-x-1 transition-transform">
+                  View Showcase Gallery <ArrowRight size={10} />
+                </div>
               </div>
             ))}
           </div>
@@ -1057,6 +1126,154 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      {/* Interactive Service Style Class Selection Modal */}
+      <AnimatePresence>
+        {selectedService && (
+          <div className="fixed inset-0 z-[80] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-[4px] overflow-y-auto">
+            <motion.div 
+              id="service-showcase-modal"
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-[#F6F4F0] max-w-5xl w-full p-6 sm:p-8 md:p-10 shadow-2xl border border-black/10 rounded-sm relative text-[#1E1E1E]"
+            >
+              <button 
+                id="service-showcase-close"
+                onClick={() => setSelectedService(null)}
+                className="absolute top-4 right-4 text-black hover:text-[#D4AF37] cursor-pointer p-1"
+                aria-label="Close details"
+              >
+                <X size={22} />
+              </button>
+
+              <div id="service-showcase-grid" className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 mt-4">
+                {/* Left Panel: Content (5 cols) */}
+                <div id="service-showcase-left" className="lg:col-span-5 flex flex-col justify-between">
+                  <div>
+                    <div className="mb-4 flex items-center gap-3">
+                      <span id="service-showcase-icon" className="text-3xl font-serif italic text-[#D4AF37]">
+                        {selectedService.icon}
+                      </span>
+                      <div className="w-8 h-[1px] bg-[#D4AF37]" />
+                      <span className="text-[#D4AF37] font-sans text-[9px] uppercase tracking-[0.3em] font-bold">Curated Series</span>
+                    </div>
+
+                    <h3 id="service-showcase-title" className="text-3xl font-serif font-light italic mb-4 leading-tight">
+                      {selectedService.title}
+                    </h3>
+
+                    <p id="service-showcase-desc" className="font-sans text-xs text-black/70 leading-relaxed mb-6">
+                      {selectedService.description}
+                    </p>
+
+                    {/* Dynamic Styling Statement */}
+                    <div className="pt-6 border-t border-black/15">
+                      <h4 className="text-[9px] uppercase tracking-widest font-sans font-bold text-black/45 mb-2">Selected Style Design</h4>
+                      <p className="text-xs italic text-black/60 font-sans">
+                        "We design to frame the silence. This series highlights custom materials, neutral tones, and geometric depth."
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="pt-8">
+                    <button
+                      id="service-showcase-book-btn"
+                      onClick={() => {
+                        setBookingSpace(selectedService.title);
+                        setSelectedService(null);
+                        if (!currentUser) {
+                          triggerToast("Sign in with Google first to book active consultations.", "error");
+                          return;
+                        }
+                        setIsBookingOpen(true);
+                      }}
+                      className="w-full sm:w-auto px-6 py-3.5 bg-black hover:bg-[#D4AF37] text-white transition-all text-[9px] uppercase tracking-[0.2em] font-sans font-bold flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <Calendar size={12} />
+                      Bespoke Consultation
+                    </button>
+                  </div>
+                </div>
+
+                {/* Right Panel: Showcase Gallery (7 cols) */}
+                <div id="service-showcase-right" className="lg:col-span-7 flex flex-col gap-4">
+                  <div id="service-showcase-stage" className="relative aspect-video sm:aspect-[4/3] w-full overflow-hidden bg-black/5 rounded-sm shadow-inner group">
+                    <img
+                      id="service-showcase-main-image"
+                      src={selectedService.images?.[activeServiceImageIdx]?.url}
+                      alt={selectedService.images?.[activeServiceImageIdx]?.caption || selectedService.title}
+                      className="w-full h-full object-cover transition-all duration-700 select-none"
+                      referrerPolicy="no-referrer"
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 text-white">
+                      <p id="service-showcase-image-index" className="text-[9px] uppercase tracking-[0.3em] text-[#D4AF37] mb-1 font-bold">
+                        Showcase Image {activeServiceImageIdx + 1} of {selectedService.images?.length || 0}
+                      </p>
+                      <p id="service-showcase-image-caption" className="text-sm font-serif italic text-white/90">
+                        {selectedService.images?.[activeServiceImageIdx]?.caption}
+                      </p>
+                    </div>
+
+                    {/* Navigation Carousel arrows */}
+                    <div className="absolute inset-y-0 left-2 right-2 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                      <button
+                        id="service-showcase-prev-arr"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const limit = selectedService.images?.length || 0;
+                          setActiveServiceImageIdx((prev) => (prev - 1 + limit) % limit);
+                        }}
+                        className="w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black hover:text-[#D4AF37] transition-all cursor-pointer pointer-events-auto"
+                        aria-label="Previous illustration"
+                      >
+                        &larr;
+                      </button>
+                      <button
+                        id="service-showcase-next-arr"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const limit = selectedService.images?.length || 0;
+                          setActiveServiceImageIdx((prev) => (prev + 1) % limit);
+                        }}
+                        className="w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black hover:text-[#D4AF37] transition-all cursor-pointer pointer-events-auto"
+                        aria-label="Next illustration"
+                      >
+                        &rarr;
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* High Quality Thumbnail Navigation */}
+                  <div id="service-showcase-thumbnails" className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-1.5 max-h-[180px] overflow-y-auto pr-1.5 scrollbar-thin">
+                    {selectedService.images?.map((img: any, idx: number) => (
+                      <button
+                        key={idx}
+                        id={`service-thumbnail-btn-${idx}`}
+                        onClick={() => setActiveServiceImageIdx(idx)}
+                        className={`aspect-video w-full overflow-hidden relative border transition-all rounded-sm cursor-pointer ${
+                          activeServiceImageIdx === idx 
+                            ? "border-[#D4AF37] ring-1 ring-[#D4AF37] opacity-100" 
+                            : "border-black/5 opacity-60 hover:opacity-100"
+                        }`}
+                        aria-label={`Showcase slide ${idx + 1}`}
+                      >
+                        <img
+                          id={`service-thumbnail-img-${idx}`}
+                          src={img.url}
+                          alt={img.caption || `Thumbnail ${idx}`}
+                          className="w-full h-full object-cover"
+                          referrerPolicy="no-referrer"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Consultation scheduling popup modal */}
       <AnimatePresence>
