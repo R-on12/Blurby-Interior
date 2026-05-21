@@ -65,6 +65,10 @@ const IMAGES = {
   westernModernLiving: "/src/assets/images/western_modern_living_1779358290743.png",
   westernModernBath: "/src/assets/images/western_modern_bath_1779358307727.png",
   westernModernOffice: "/src/assets/images/western_modern_office_1779358327752.png",
+  planDollhouse: "/src/assets/images/plan_dollhouse_render_1779358652495.png",
+  planWireframe: "/src/assets/images/plan_wireframe_lux_1779358675384.png",
+  planSectional: "/src/assets/images/plan_sectional_axono_1779358695752.png",
+  planElevation: "/src/assets/images/plan_elevation_study_1779358717270.png",
 };
 
 const SERVICES = [
@@ -144,10 +148,14 @@ const SERVICES = [
     description: "Bringing your vision to life through high-fidelity artistic renderings and precise spatial strategy.",
     icon: "06",
     images: [
-      { url: IMAGES.planning, caption: "High-Fidelity Virtual Walkthrough" },
-      { url: IMAGES.contemporary, caption: "Virtual Kitchen Prototype" },
-      { url: IMAGES.modern, caption: "Virtual Living Space Render" },
-      { url: IMAGES.minimalist, caption: "Hallway Spatial Geometry Analysis" }
+      { url: IMAGES.planDollhouse, caption: "3D Minimalist Apartment Dollhouse spatial render with materials study" },
+      { url: IMAGES.planWireframe, caption: "Penthouse CAD integration overlay & photorealistic wireframe perspective" },
+      { url: IMAGES.planSectional, caption: "Axonometric cut-away suite detailing spatial floor and furniture layout" },
+      { url: IMAGES.planElevation, caption: "Elevation blueprint detailing double-height marble fireplace panels" },
+      { url: IMAGES.planning, caption: "3D interactive render showcasing daylight intensity & camera walkthrough" },
+      { url: IMAGES.contemporary, caption: "Virtual contemporary kitchen space mock with lighting parameters study" },
+      { url: IMAGES.modern, caption: "Onyx virtual dining room layout showing structural flow modeling" },
+      { url: IMAGES.minimalist, caption: "Hallway spatial geometric blueprint layout and perspective study" }
     ]
   }
 ];
